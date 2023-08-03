@@ -1,6 +1,9 @@
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = var.profile_name
   role = aws_iam_role.iam_role.name
+    lifecycle {
+    ignore_changes = [tags]
+  }
 }
 resource "aws_iam_role" "iam_role" {
   name = var.role_name
@@ -18,6 +21,9 @@ resource "aws_iam_role" "iam_role" {
       },
     ]
   })
+    lifecycle {
+    ignore_changes = [tags]
+  }
 }
 resource "aws_iam_policy" "policy" {
   name        = var.policy_name
@@ -31,10 +37,12 @@ resource "aws_iam_policy" "policy" {
       },
     ]
   })
+    lifecycle {
+    ignore_changes = [tags]
+  }
 }
 resource "aws_iam_policy_attachment" "test-attach" {
   name       =   var.policy_attachment_name
   roles       = [aws_iam_role.iam_role.name]
   policy_arn = aws_iam_policy.policy.arn
-  
 }
